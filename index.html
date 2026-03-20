@@ -178,20 +178,160 @@
   .btn-export { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 9px 16px; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 7px; }
   .btn-export:hover { border-color: var(--accent); color: var(--accent); }
 
+  /* ── TABS ── */
+  .tabs-nav {
+    max-width: 1340px; margin: 0 auto;
+    display: flex; gap: 0; border-bottom: 2px solid var(--border);
+    padding: 0 40px; background: var(--surface);
+  }
+  .tab-btn {
+    background: transparent; border: none; border-bottom: 3px solid transparent;
+    margin-bottom: -2px; padding: 14px 22px;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+    cursor: pointer; transition: color .2s, border-color .2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-btn .tab-badge {
+    background: var(--border); color: var(--muted); font-size: 10px;
+    padding: 1px 6px; border-radius: 2px; font-family: 'Share Tech Mono', monospace;
+  }
+  .tab-btn.active .tab-badge { background: rgba(240,165,0,.15); color: var(--accent); }
+  .tab-page { display: none; }
+  .tab-page.active { display: block; }
+
+  /* ── PROPOSTA SECTION ── */
+  .proposta-layout {
+    max-width: 1340px; margin: 0 auto; padding: 40px;
+    display: grid; grid-template-columns: 420px 1fr; gap: 32px; align-items: start;
+  }
+  .proposta-form {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: 3px solid var(--blue); padding: 28px;
+    position: sticky; top: 120px;
+  }
+  .proposta-form .panel-title { color: var(--blue); }
+  .proposta-form .panel-title::before { background: var(--blue); }
+  .proposta-form .section-divider { color: var(--blue); }
+
+  textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); font-family: 'Barlow', sans-serif; font-size: 13px;
+    padding: 9px 12px; outline: none; transition: border-color .2s;
+    resize: vertical; line-height: 1.6;
+  }
+  textarea:focus { border-color: var(--blue); }
+  textarea::placeholder { color: #3d444d; }
+
+  .cpf-row { display: flex; gap: 8px; }
+  .cpf-row input { flex: 1; }
+  .btn-buscar {
+    background: var(--blue); color: #000; border: none;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 13px;
+    letter-spacing: 1px; text-transform: uppercase; padding: 9px 14px;
+    cursor: pointer; transition: background .2s; white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-buscar:hover { background: #79c0ff; }
+  .btn-buscar:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .spinner-blue { display: none; width: 13px; height: 13px; border: 2px solid #000; border-top-color: transparent; border-radius: 50%; animation: spin .6s linear infinite; }
+
+  .dados-encontrados {
+    background: var(--bg); border: 1px solid var(--border);
+    border-left: 3px solid var(--green); padding: 12px 14px; margin-top: 8px;
+    font-size: 12px; font-family: 'Share Tech Mono', monospace; color: var(--muted);
+    display: none;
+  }
+  .dados-encontrados.visible { display: block; }
+  .dados-encontrados .de-row { display: flex; justify-content: space-between; padding: 2px 0; }
+  .dados-encontrados .de-val { color: var(--text); }
+
+  .parcelas-container { margin-top: 8px; }
+  .parcela-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr 32px; gap: 6px;
+    margin-bottom: 6px; align-items: end;
+  }
+  .btn-rm-parcela {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    width: 32px; height: 38px; cursor: pointer; font-size: 16px;
+    transition: border-color .2s, color .2s; display: flex; align-items: center; justify-content: center;
+  }
+  .btn-rm-parcela:hover { border-color: var(--red); color: var(--red); }
+  .btn-add-parcela {
+    background: transparent; border: 1px dashed var(--border); color: var(--muted);
+    width: 100%; padding: 7px; cursor: pointer; font-size: 12px;
+    font-family: 'Barlow Condensed', sans-serif; letter-spacing: 2px;
+    text-transform: uppercase; transition: border-color .2s, color .2s; margin-top: 4px;
+  }
+  .btn-add-parcela:hover { border-color: var(--blue); color: var(--blue); }
+
+  .btn-gerar-proposta {
+    width: 100%; background: var(--blue); color: #000; border: none;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px;
+    letter-spacing: 2px; text-transform: uppercase; padding: 13px;
+    cursor: pointer; transition: background .2s, transform .1s;
+    display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px;
+  }
+  .btn-gerar-proposta:hover { background: #79c0ff; }
+  .btn-gerar-proposta:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .spinner-gerar { display: none; width: 16px; height: 16px; border: 2px solid #000; border-top-color: transparent; border-radius: 50%; animation: spin .6s linear infinite; }
+
+  /* CONTRATO OUTPUT */
+  .contrato-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: 3px solid var(--blue); padding: 32px 36px;
+    animation: fadeUp .4s ease both;
+  }
+  .contrato-card .card-title { color: var(--blue); }
+  .contrato-body {
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 28px 32px; margin-top: 16px;
+    font-family: 'Barlow', sans-serif; font-size: 14px; line-height: 1.9;
+    color: var(--text); white-space: pre-wrap; word-break: break-word;
+  }
+  .contrato-actions {
+    display: flex; justify-content: flex-end; gap: 10px;
+    padding-top: 14px; border-top: 1px solid var(--border); margin-top: 16px;
+  }
+  .proposta-placeholder {
+    background: var(--surface); border: 1px dashed var(--border);
+    padding: 60px 40px; text-align: center; color: var(--muted);
+  }
+  .proposta-placeholder svg { opacity: .25; margin: 0 auto 16px; display: block; }
+  .proposta-placeholder p { font-size: 13px; letter-spacing: 1px; line-height: 2.4; }
+
+  /* ── AI STATUS BAR ── */
+  .ai-status {
+    display: none; align-items: center; gap: 10px;
+    background: rgba(88,166,255,.07); border: 1px solid rgba(88,166,255,.2);
+    padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: var(--blue);
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .ai-status.visible { display: flex; }
+  .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); animation: pulse 1.2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
   @media print {
-    header { position: static; }
-    .form-panel, .export-bar, .btn-row { display: none !important; }
+    header, .tabs-nav { position: static; }
+    .proposta-form, .contrato-actions, .btn-row { display: none !important; }
+    .proposta-layout { grid-template-columns: 1fr; }
+    .contrato-card { break-inside: avoid; }
+    .form-panel, .export-bar { display: none !important; }
     .container { grid-template-columns: 1fr; }
     .result-card { break-inside: avoid; }
   }
   @media (max-width: 1000px) {
-    .container { grid-template-columns: 1fr; padding: 20px; }
-    .form-panel { position: static; }
+    .container, .proposta-layout { grid-template-columns: 1fr; padding: 20px; }
+    .form-panel, .proposta-form { position: static; }
     .exec-grid { grid-template-columns: 1fr 1fr; }
-    header { padding: 0 20px; }
+    header, .tabs-nav { padding: 0 20px; }
   }
   @media (max-width: 560px) {
     .exec-grid, .params-grid, .field-row { grid-template-columns: 1fr; }
+    .parcela-row { grid-template-columns: 1fr 1fr; }
+    .parcela-row .btn-rm-parcela { grid-column: span 2; width: 100%; }
   }
 </style>
 </head>
@@ -203,6 +343,21 @@
   <div class="subtitle">Estudo Técnico para Viabilidade de Projeto</div>
 </header>
 
+<!-- TABS -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="trocarAba('viabilidade', this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    Análise de Viabilidade
+    <span class="tab-badge">MCMV</span>
+  </button>
+  <button class="tab-btn" onclick="trocarAba('proposta', this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    Proposta de Compra
+    <span class="tab-badge">CONTRATO</span>
+  </button>
+</nav>
+
+<div class="tab-page active" id="tab-viabilidade">
 <div class="container">
 
   <!-- ── FORM PANEL ── -->
@@ -328,7 +483,188 @@
     </div>
   </main>
 
-</div>
+</div><!-- /.container -->
+</div><!-- /#tab-viabilidade -->
+
+<!-- ══════════════════════════════════════════════════
+     ABA: PROPOSTA DE COMPRA
+══════════════════════════════════════════════════ -->
+<div class="tab-page" id="tab-proposta">
+<div class="proposta-layout">
+
+  <!-- FORM -->
+  <aside class="proposta-form">
+    <div class="panel-title">Dados da Proposta</div>
+
+    <!-- A) IMÓVEL -->
+    <div class="section-divider">A — Detalhes do Imóvel</div>
+
+    <div class="field-group">
+      <label>Endereço Completo</label>
+      <input type="text" id="p_endereco" placeholder="Rua, número, bairro, cidade – UF" />
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Matrícula / Registro</label>
+        <input type="text" id="p_matricula" placeholder="Nº da matrícula no CRI" />
+      </div>
+      <div class="field-group">
+        <label>Área Total (m²)</label>
+        <input type="number" id="p_area" placeholder="ex: 600" min="1" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Características Relevantes</label>
+      <textarea id="p_caracteristicas" rows="3" placeholder="Topografia, confrontações, benfeitorias, zoneamento..."></textarea>
+    </div>
+
+    <!-- B) LOCALIZAÇÃO -->
+    <div class="section-divider">B — Localização</div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>CEP</label>
+        <input type="text" id="p_cep" placeholder="00000-000" maxlength="9" oninput="mascaraCEP(this)" />
+      </div>
+      <div class="field-group">
+        <label>Município / UF</label>
+        <input type="text" id="p_cidade" placeholder="ex: Fortaleza – CE" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Zona / Bairro / Referências</label>
+      <input type="text" id="p_zona" placeholder="ex: Zona Norte, próximo ao Centro" />
+    </div>
+
+    <!-- C/D) COMPRADOR -->
+    <div class="section-divider">C/D — Comprador Interessado</div>
+
+    <div class="field-group">
+      <label>CPF ou CNPJ</label>
+      <div class="cpf-row">
+        <input type="text" id="p_cpfcnpj" placeholder="000.000.000-00 ou 00.000.000/0000-00"
+               maxlength="18" oninput="mascaraDocumento(this)" />
+        <button class="btn-buscar" id="btnBuscar" onclick="buscarDados()">
+          <span id="buscarText">Buscar</span>
+          <div class="spinner-blue" id="spinnerBuscar"></div>
+        </button>
+      </div>
+      <div class="hint">Informe CPF ou CNPJ para busca automática de dados cadastrais</div>
+    </div>
+
+    <div class="dados-encontrados" id="dadosEncontrados">
+      <!-- preenchido via JS -->
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Nome / Razão Social</label>
+        <input type="text" id="p_nome" placeholder="Nome completo" />
+      </div>
+      <div class="field-group">
+        <label>Nacionalidade</label>
+        <input type="text" id="p_nacionalidade" placeholder="Brasileiro(a)" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Estado Civil</label>
+        <select id="p_estadocivil">
+          <option value="">— Selecione —</option>
+          <option>Solteiro(a)</option>
+          <option>Casado(a)</option>
+          <option>Divorciado(a)</option>
+          <option>Viúvo(a)</option>
+          <option>União Estável</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Profissão</label>
+        <input type="text" id="p_profissao" placeholder="ex: Empresário" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>RG / Doc. Identidade</label>
+        <input type="text" id="p_rg" placeholder="Nº e órgão emissor" />
+      </div>
+      <div class="field-group">
+        <label>E-mail</label>
+        <input type="email" id="p_email" placeholder="email@exemplo.com" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Endereço Residencial / Sede</label>
+      <input type="text" id="p_enderecoComprador" placeholder="Rua, número, bairro, cidade – UF" />
+    </div>
+
+    <!-- E) NEGOCIAÇÃO -->
+    <div class="section-divider">E — Condições Comerciais</div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Valor Total da Proposta</label>
+        <div class="input-wrap">
+          <input type="number" id="p_valor" placeholder="ex: 500000" min="1" />
+          <span class="suffix">R$</span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Validade da Proposta</label>
+        <input type="date" id="p_validade" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Forma de Pagamento</label>
+      <select id="p_formaPgto" onchange="atualizarFormaPgto()">
+        <option value="">— Selecione —</option>
+        <option value="avista">À Vista</option>
+        <option value="financiado">Financiado (Banco)</option>
+        <option value="parcelado">Parcelado Direto com o Vendedor</option>
+        <option value="misto">Entrada + Financiamento + Parcelas</option>
+      </select>
+    </div>
+
+    <div id="parcelasWrap">
+      <label style="margin-bottom:8px;display:block;">Parcelas / Condições de Pagamento</label>
+      <div class="parcelas-container" id="parcelasContainer">
+        <!-- gerado via JS -->
+      </div>
+      <button class="btn-add-parcela" onclick="addParcela()">+ Adicionar Parcela</button>
+    </div>
+
+    <div class="field-group" style="margin-top:12px;">
+      <label>Observações Comerciais</label>
+      <textarea id="p_obs" rows="2" placeholder="Prazo para entrega de documentos, condições suspensivas, etc."></textarea>
+    </div>
+
+    <!-- GERAR -->
+    <div class="btn-row" style="margin-top:16px;">
+      <button class="btn-gerar-proposta" id="btnGerarProposta" onclick="gerarProposta()">
+        <span id="gerarText">Gerar Compromisso de Compra</span>
+        <div class="spinner-gerar" id="spinnerGerar"></div>
+      </button>
+      <button class="btn-limpar" onclick="limparProposta()" title="Limpar proposta">✕</button>
+    </div>
+  </aside>
+
+  <!-- RESULTADO PROPOSTA -->
+  <main id="resultadoProposta">
+    <div class="proposta-placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      <p>Preencha os dados ao lado e clique em<br><strong>Gerar Compromisso de Compra</strong><br>
+      <span style="font-size:11px;opacity:.6">O texto do compromisso será redigido automaticamente por IA</span></p>
+    </div>
+  </main>
+
+</div><!-- /.proposta-layout -->
+</div><!-- /#tab-proposta -->
 
 <script>
 // ── HELPERS ──────────────────────────────────────────
@@ -536,7 +872,7 @@ function analisar() {
 
     <!-- 04 RESUMO EXECUTIVO -->
     <div class="result-card purple-top" style="animation-delay:0s">
-      <div class="card-title purple">00 — Resumo Executivo</div>
+      <div class="card-title purple">04 — Resumo Executivo</div>
       <div class="card-label">${tu} · ${mu} m² · Terreno ${dim.frente}m × ${dim.fundo}m · ${qt} unidades · ${new Date().toLocaleDateString('pt-BR')}</div>
 
       <div class="veredicto-bar ${pos ? 'pos' : 'neg'}">
@@ -582,7 +918,7 @@ function analisar() {
 
     <!-- 05 PONTO DE EQUILÍBRIO -->
     <div class="result-card green-top" style="animation-delay:.26s">
-      <div class="card-title green">04 — Ponto de Equilíbrio</div>
+      <div class="card-title green">05 — Ponto de Equilíbrio</div>
       <div class="card-label">Quantidade mínima de unidades para cobrir todos os custos</div>
       <div class="pe-row">
         <span class="pe-row-label">Unidades necessárias para break-even</span>
@@ -614,7 +950,7 @@ function analisar() {
 
     <!-- 06 PARÂMETROS DO CENÁRIO -->
     <div class="result-card" style="animation-delay:.32s">
-      <div class="card-title">05 — Parâmetros do Cenário</div>
+      <div class="card-title">06 — Parâmetros do Cenário</div>
       <div class="card-label">Todos os valores utilizados nesta análise</div>
       <div class="params-grid">
         <div class="param-cell">
@@ -672,13 +1008,6 @@ function analisar() {
 
     <!-- BARRA DE EXPORTAÇÃO -->
     <div class="export-bar">
-      <button class="btn-export" onclick="exportCSV(window.__d__)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        Exportar CSV
-      </button>
       <button class="btn-export" onclick="window.print()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="6 9 6 2 18 2 18 9"/>
@@ -696,6 +1025,394 @@ function analisar() {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Enter') analisar(); });
+
+// ══════════════════════════════════════════════════
+//  PROPOSTA DE COMPRA — LÓGICA
+// ══════════════════════════════════════════════════
+
+// ── TROCA DE ABA ──
+function trocarAba(aba, btn) {
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + aba).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── MÁSCARAS ──
+function mascaraDocumento(el) {
+  let v = el.value.replace(/\D/g, '');
+  if (v.length <= 11) {
+    v = v.replace(/(\d{3})(\d)/, '$1.$2')
+         .replace(/(\d{3})(\d)/, '$1.$2')
+         .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  } else {
+    v = v.replace(/^(\d{2})(\d)/, '$1.$2')
+         .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+         .replace(/\.(\d{3})(\d)/, '.$1/$2')
+         .replace(/(\d{4})(\d)/, '$1-$2');
+  }
+  el.value = v;
+}
+
+function mascaraCEP(el) {
+  let v = el.value.replace(/\D/g, '').substring(0, 8);
+  if (v.length > 5) v = v.substring(0, 5) + '-' + v.substring(5);
+  el.value = v;
+}
+
+// ── FORMA DE PAGAMENTO ──
+function atualizarFormaPgto() {
+  const forma = document.getElementById('p_formaPgto').value;
+  const wrap = document.getElementById('parcelasWrap');
+  const cont = document.getElementById('parcelasContainer');
+  cont.innerHTML = '';
+
+  if (forma === 'avista') {
+    wrap.style.display = 'block';
+    addParcelaComDados('Pagamento à vista', '', '');
+    document.querySelector('.btn-add-parcela').style.display = 'none';
+  } else if (forma === 'financiado') {
+    wrap.style.display = 'block';
+    addParcelaComDados('Entrada', '', '');
+    addParcelaComDados('Financiamento bancário', '', '');
+    document.querySelector('.btn-add-parcela').style.display = 'block';
+  } else if (forma === 'parcelado') {
+    wrap.style.display = 'block';
+    addParcelaComDados('Sinal / Entrada', '', '');
+    addParcelaComDados('Parcelas mensais', '', '');
+    document.querySelector('.btn-add-parcela').style.display = 'block';
+  } else if (forma === 'misto') {
+    wrap.style.display = 'block';
+    addParcelaComDados('Entrada', '', '');
+    addParcelaComDados('Financiamento bancário', '', '');
+    addParcelaComDados('Parcelas direto ao vendedor', '', '');
+    document.querySelector('.btn-add-parcela').style.display = 'block';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+function addParcelaComDados(desc, val, prazo) {
+  addParcela();
+  const rows = document.querySelectorAll('.parcela-row');
+  const last = rows[rows.length - 1];
+  last.querySelector('.parc-desc').value  = desc;
+  last.querySelector('.parc-valor').value = val;
+  last.querySelector('.parc-prazo').value = prazo;
+}
+
+let parcelaIdx = 0;
+function addParcela() {
+  const idx = parcelaIdx++;
+  const row = document.createElement('div');
+  row.className = 'parcela-row';
+  row.id = 'parc_' + idx;
+  row.innerHTML = `
+    <div class="field-group" style="margin:0">
+      <label>Descrição</label>
+      <input class="parc-desc" type="text" placeholder="ex: Entrada" />
+    </div>
+    <div class="field-group" style="margin:0">
+      <label>Valor (R$)</label>
+      <input class="parc-valor" type="number" placeholder="ex: 50000" min="0" />
+    </div>
+    <div class="field-group" style="margin:0">
+      <label>Prazo / Condição</label>
+      <input class="parc-prazo" type="text" placeholder="ex: na assinatura" />
+    </div>
+    <button class="btn-rm-parcela" onclick="document.getElementById('parc_${idx}').remove()" title="Remover">×</button>
+  `;
+  document.getElementById('parcelasContainer').appendChild(row);
+}
+
+// inicializa wrap oculto
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('parcelasWrap').style.display = 'none';
+});
+
+// ── BUSCA AUTOMÁTICA DE DADOS DO COMPRADOR ──
+async function buscarDados() {
+  const raw = document.getElementById('p_cpfcnpj').value.replace(/\D/g, '');
+  if (!raw || (raw.length !== 11 && raw.length !== 14)) {
+    alert('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.');
+    return;
+  }
+
+  const btn = document.getElementById('btnBuscar');
+  const sp  = document.getElementById('spinnerBuscar');
+  const bt  = document.getElementById('buscarText');
+  btn.disabled = true; bt.style.display = 'none'; sp.style.display = 'inline-block';
+
+  const tipo = raw.length === 11 ? 'CPF' : 'CNPJ';
+  const doc  = document.getElementById('p_cpfcnpj').value;
+
+  try {
+    // Para CNPJ, tenta API pública da ReceitaWS
+    let dadosParsed = null;
+
+    if (raw.length === 14) {
+      try {
+        const r = await fetch(`https://receitaws.com.br/v1/cnpj/${raw}`);
+        if (r.ok) {
+          const j = await r.json();
+          if (j.status !== 'ERROR') {
+            dadosParsed = {
+              nome: j.nome || j.fantasia || '',
+              situacao: j.situacao || '',
+              endereco: `${j.logradouro || ''}, ${j.numero || ''} – ${j.bairro || ''}, ${j.municipio || ''} – ${j.uf || ''}`,
+              email: j.email || '',
+              tipo: 'CNPJ',
+              atividade: j.atividade_principal?.[0]?.text || ''
+            };
+          }
+        }
+      } catch(_) {}
+    }
+
+    // Usa Claude como fallback inteligente para complementar / para CPF
+    const prompt = dadosParsed
+      ? `Com base nos dados públicos do CNPJ ${doc}, complementei as seguintes informações já obtidas via API: ${JSON.stringify(dadosParsed)}. Retorne APENAS um JSON válido (sem markdown, sem explicações) com os campos: nome, nacionalidade, estadoCivil, profissao, rg, email, endereco, observacao. Preencha com os dados encontrados e deixe vazio o que não souber.`
+      : `Analise o documento ${tipo} número ${doc} informado para fins de cadastro em contrato imobiliário. Se for um CNPJ público, informe razão social e demais dados disponíveis publicamente. Se for CPF, retorne os campos com valores vazios pois CPF é dado protegido. Retorne APENAS um JSON válido (sem markdown, sem explicações) com os campos: nome, nacionalidade, estadoCivil, profissao, rg, email, endereco, observacao, tipo (pessoa física ou jurídica), alertas (string com observações sobre o documento).`;
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await resp.json();
+    const texto = data.content?.map(c => c.text || '').join('') || '{}';
+    let json = {};
+    try {
+      const clean = texto.replace(/```json|```/g, '').trim();
+      json = JSON.parse(clean);
+    } catch(_) {}
+
+    // Preencher campos
+    if (json.nome)          document.getElementById('p_nome').value              = json.nome;
+    if (json.nacionalidade) document.getElementById('p_nacionalidade').value     = json.nacionalidade;
+    if (json.estadoCivil)   document.getElementById('p_estadocivil').value       = json.estadoCivil;
+    if (json.profissao)     document.getElementById('p_profissao').value         = json.profissao;
+    if (json.rg)            document.getElementById('p_rg').value                = json.rg;
+    if (json.email)         document.getElementById('p_email').value             = json.email;
+    if (json.endereco)      document.getElementById('p_enderecoComprador').value = json.endereco;
+
+    // Badge de resultado
+    const box = document.getElementById('dadosEncontrados');
+    const campos = [
+      ['Documento', doc],
+      ['Tipo', json.tipo || tipo],
+      ['Nome / Razão Social', json.nome || '—'],
+      ['Endereço', json.endereco || '—'],
+      ['E-mail', json.email || '—'],
+      ['Observações', json.alertas || '—'],
+    ];
+    box.innerHTML = campos.map(([k, v]) =>
+      `<div class="de-row"><span>${k}</span><span class="de-val">${v}</span></div>`
+    ).join('');
+    box.classList.add('visible');
+
+  } catch(err) {
+    alert('Não foi possível buscar os dados automaticamente. Preencha manualmente os campos do comprador.');
+  } finally {
+    btn.disabled = false; bt.style.display = 'inline'; sp.style.display = 'none';
+  }
+}
+
+// ── GERAR PROPOSTA / COMPROMISSO ──
+async function gerarProposta() {
+  // Coletar parcelas
+  const parcelaRows = document.querySelectorAll('.parcela-row');
+  const parcelas = [];
+  parcelaRows.forEach(row => {
+    const desc  = row.querySelector('.parc-desc')?.value?.trim();
+    const valor = row.querySelector('.parc-valor')?.value?.trim();
+    const prazo = row.querySelector('.parc-prazo')?.value?.trim();
+    if (desc || valor || prazo) parcelas.push({ desc, valor, prazo });
+  });
+
+  // Validação mínima
+  const erros = [];
+  if (!document.getElementById('p_endereco').value.trim())  erros.push('Endereço do Imóvel');
+  if (!document.getElementById('p_nome').value.trim())      erros.push('Nome do Comprador');
+  if (!document.getElementById('p_cpfcnpj').value.trim())   erros.push('CPF/CNPJ');
+  if (!document.getElementById('p_valor').value)            erros.push('Valor da Proposta');
+  if (erros.length) { alert('Preencha os campos obrigatórios: ' + erros.join(', ')); return; }
+
+  const btn = document.getElementById('btnGerarProposta');
+  const sp  = document.getElementById('spinnerGerar');
+  const bt  = document.getElementById('gerarText');
+  btn.disabled = true; bt.style.display = 'none'; sp.style.display = 'inline-block';
+
+  // Mostrar status
+  const resultDiv = document.getElementById('resultadoProposta');
+  resultDiv.innerHTML = `
+    <div class="contrato-card">
+      <div class="card-title blue">Gerando documento com IA...</div>
+      <div class="ai-status visible" id="aiStatus">
+        <div class="ai-dot"></div>
+        <span id="aiStatusTxt">Redigindo compromisso de compra...</span>
+      </div>
+      <div class="contrato-body" id="contratoBody" style="min-height:200px;color:var(--muted);font-style:italic;">
+        Aguarde, o texto está sendo gerado...
+      </div>
+    </div>`;
+
+  // Montar dados para o prompt
+  const dados = {
+    imovel: {
+      endereco:       document.getElementById('p_endereco').value.trim(),
+      matricula:      document.getElementById('p_matricula').value.trim(),
+      area:           document.getElementById('p_area').value.trim(),
+      caracteristicas:document.getElementById('p_caracteristicas').value.trim(),
+      cep:            document.getElementById('p_cep').value.trim(),
+      cidade:         document.getElementById('p_cidade').value.trim(),
+      zona:           document.getElementById('p_zona').value.trim(),
+    },
+    comprador: {
+      nome:           document.getElementById('p_nome').value.trim(),
+      cpfcnpj:        document.getElementById('p_cpfcnpj').value.trim(),
+      nacionalidade:  document.getElementById('p_nacionalidade').value.trim(),
+      estadoCivil:    document.getElementById('p_estadocivil').value.trim(),
+      profissao:      document.getElementById('p_profissao').value.trim(),
+      rg:             document.getElementById('p_rg').value.trim(),
+      email:          document.getElementById('p_email').value.trim(),
+      endereco:       document.getElementById('p_enderecoComprador').value.trim(),
+    },
+    negociacao: {
+      valorTotal:     new Intl.NumberFormat('pt-BR', {style:'currency',currency:'BRL'}).format(parseFloat(document.getElementById('p_valor').value)),
+      formaPgto:      document.getElementById('p_formaPgto').options[document.getElementById('p_formaPgto').selectedIndex]?.text || '',
+      validade:       document.getElementById('p_validade').value
+                      ? new Date(document.getElementById('p_validade').value + 'T12:00:00').toLocaleDateString('pt-BR')
+                      : '',
+      parcelas:       parcelas,
+      observacoes:    document.getElementById('p_obs').value.trim(),
+    }
+  };
+
+  const prompt = `
+Você é um advogado especialista em direito imobiliário brasileiro. Redija um COMPROMISSO/PROPOSTA DE COMPRA DE IMÓVEL completo e juridicamente válido em português formal, com base nos dados abaixo.
+
+DADOS DO IMÓVEL:
+- Endereço: ${dados.imovel.endereco}
+- Matrícula/Registro: ${dados.imovel.matricula || 'a ser informada'}
+- Área Total: ${dados.imovel.area ? dados.imovel.area + ' m²' : 'a ser informada'}
+- CEP: ${dados.imovel.cep}
+- Município/UF: ${dados.imovel.cidade}
+- Zona/Bairro: ${dados.imovel.zona}
+- Características: ${dados.imovel.caracteristicas || 'conforme descrito na matrícula'}
+
+DADOS DO COMPRADOR:
+- Nome/Razão Social: ${dados.comprador.nome}
+- CPF/CNPJ: ${dados.comprador.cpfcnpj}
+- Nacionalidade: ${dados.comprador.nacionalidade || 'brasileira'}
+- Estado Civil: ${dados.comprador.estadoCivil || 'não informado'}
+- Profissão: ${dados.comprador.profissao || 'não informada'}
+- RG/Documento: ${dados.comprador.rg || 'a ser informado'}
+- E-mail: ${dados.comprador.email || 'não informado'}
+- Endereço: ${dados.comprador.endereco || 'não informado'}
+
+CONDIÇÕES COMERCIAIS:
+- Valor Total da Proposta: ${dados.negociacao.valorTotal}
+- Forma de Pagamento: ${dados.negociacao.formaPgto}
+- Condições de Pagamento: ${dados.negociacao.parcelas.map(p => `${p.desc}: R$ ${p.valor} – ${p.prazo}`).join('; ') || 'conforme negociação'}
+- Validade da Proposta: ${dados.negociacao.validade || 'a ser definida'}
+- Observações: ${dados.negociacao.observacoes || 'nenhuma'}
+
+Estruture o documento com:
+1. Cabeçalho formal com título "PROPOSTA DE COMPROMISSO DE COMPRA E VENDA"
+2. Identificação completa das partes (PROPONENTE COMPRADOR e campo para VENDEDOR a preencher)
+3. Identificação e descrição do imóvel
+4. Valor e condições de pagamento detalhadas
+5. Cláusula de autorização ao corretor/intermediador para iniciar negociação com o proprietário
+6. Cláusula de validade da proposta
+7. Cláusula de arras/sinal (se aplicável)
+8. Cláusula de resolução de conflitos
+9. Local, data e espaços para assinatura do proponente, duas testemunhas e campo para aceite do vendedor
+10. Nota de rodapé informando que o documento é uma proposta e não substitui escritura pública
+
+Mantenha linguagem formal, clara e objetiva. Use numeração de cláusulas.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 3000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await resp.json();
+    const texto = data.content?.map(c => c.text || '').join('') || 'Erro ao gerar documento.';
+
+    resultDiv.innerHTML = `
+      <div class="contrato-card">
+        <div class="card-title blue">Compromisso de Compra — Redigido por IA</div>
+        <div class="card-label">Proposta gerada em ${new Date().toLocaleDateString('pt-BR')} · Revise e assine com auxílio de advogado</div>
+
+        <div style="background:rgba(248,81,73,.07);border:1px solid rgba(248,81,73,.3);padding:10px 14px;margin-bottom:16px;font-size:12px;color:#f85149;font-family:'Barlow',sans-serif;">
+          ⚠ Este documento foi gerado por inteligência artificial com fins de auxílio e referência. Recomenda-se revisão por advogado habilitado antes da assinatura.
+        </div>
+
+        <div class="contrato-body" id="contratoBodyFinal">${texto}</div>
+
+        <div class="contrato-actions">
+          <button class="btn-export" onclick="copiarContrato()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copiar Texto
+          </button>
+          <button class="btn-export" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Imprimir / PDF
+          </button>
+        </div>
+      </div>`;
+
+  } catch(err) {
+    resultDiv.innerHTML = `<div class="contrato-card"><div class="card-title blue">Erro</div><div class="contrato-body" style="color:var(--red)">Não foi possível gerar o documento. Verifique sua conexão e tente novamente.\n\n${err.message}</div></div>`;
+  } finally {
+    btn.disabled = false; bt.style.display = 'inline'; sp.style.display = 'none';
+    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function copiarContrato() {
+  const el = document.getElementById('contratoBodyFinal');
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    alert('Texto copiado para a área de transferência!');
+  });
+}
+
+function limparProposta() {
+  const ids = ['p_endereco','p_matricula','p_area','p_caracteristicas','p_cep','p_cidade',
+               'p_zona','p_cpfcnpj','p_nome','p_nacionalidade','p_rg','p_email',
+               'p_enderecoComprador','p_profissao','p_valor','p_validade','p_obs'];
+  ids.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  document.getElementById('p_estadocivil').value = '';
+  document.getElementById('p_formaPgto').value = '';
+  document.getElementById('parcelasContainer').innerHTML = '';
+  document.getElementById('parcelasWrap').style.display = 'none';
+  const box = document.getElementById('dadosEncontrados');
+  box.innerHTML = ''; box.classList.remove('visible');
+  document.getElementById('resultadoProposta').innerHTML = `
+    <div class="proposta-placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      <p>Preencha os dados ao lado e clique em<br><strong>Gerar Compromisso de Compra</strong><br>
+      <span style="font-size:11px;opacity:.6">O texto do compromisso será redigido automaticamente por IA</span></p>
+    </div>`;
+}
 </script>
 </body>
 </html>
