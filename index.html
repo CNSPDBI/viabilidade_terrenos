@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise de Viabilidade de Imóvel</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --accent: #f0a500;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --green: #3fb950;
+    --red: #f85149;
+    --blue: #58a6ff;
+    --purple: #a371f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header { background: var(--surface); border-bottom: 2px solid var(--accent); padding: 0 40px; display: flex; align-items: center; gap: 24px; height: 64px; position: sticky; top: 0; z-index: 100; }
+  .logo-badge { background: var(--accent); color: #000; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 2px; padding: 4px 10px; text-transform: uppercase; }
+  header h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 3px; text-transform: uppercase; }
+  header .subtitle { margin-left: auto; font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; font-family: 'Share Tech Mono', monospace; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1340px; margin: 0 auto; padding: 40px; display: grid; grid-template-columns: 420px 1fr; gap: 32px; align-items: start; }
+
+  /* ── FORM PANEL ── */
+  .form-panel { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); padding: 28px; position: sticky; top: 80px; }
+
+  .panel-title {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
+  }
+  .panel-title::before { content: ''; display: block; width: 16px; height: 2px; background: var(--accent); flex-shrink: 0; }
+
+  .section-divider {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted);
+    border-top: 1px solid var(--border); padding-top: 16px; margin: 18px 0 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* dois campos lado a lado */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .field-group { margin-bottom: 10px; }
+
+  label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+
+  .input-wrap { position: relative; }
+  .input-wrap .suffix {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--muted);
+    pointer-events: none;
+  }
+  .input-wrap input { padding-right: 30px; }
+
+  input, select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 14px;
+    padding: 9px 12px; outline: none; transition: border-color .2s; appearance: none;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  input::placeholder { color: #3d444d; }
+  .hint { font-size: 10px; color: var(--muted); margin-top: 3px; font-family: 'Share Tech Mono', monospace; }
+
+  /* total label dinâmico */
+  .pct-total-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg); border: 1px solid var(--border); padding: 8px 12px;
+    margin-bottom: 16px; font-family: 'Share Tech Mono', monospace; font-size: 12px;
+  }
+  .pct-total-bar .label { color: var(--muted); }
+  .pct-total-bar .value { font-weight: 700; }
+  .pct-total-bar .value.ok  { color: var(--green); }
+  .pct-total-bar .value.bad { color: var(--red); }
+  .pct-total-bar .value.warn{ color: var(--accent); }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 8px; margin-top: 4px; }
+  .btn-analisar {
+    flex: 1; background: var(--accent); color: #000; border: none;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 15px;
+    letter-spacing: 2px; text-transform: uppercase; padding: 13px 10px; cursor: pointer;
+    transition: background .2s, transform .1s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-analisar:hover { background: #ffc107; }
+  .btn-analisar:active { transform: scale(.99); }
+  .btn-analisar:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-limpar {
+    background: transparent; color: var(--muted); border: 1px solid var(--border);
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px;
+    letter-spacing: 2px; text-transform: uppercase; padding: 13px 14px;
+    cursor: pointer; transition: border-color .2s, color .2s;
+  }
+  .btn-limpar:hover { border-color: var(--red); color: var(--red); }
+  .spinner { display: none; width: 16px; height: 16px; border: 2px solid #000; border-top-color: transparent; border-radius: 50%; animation: spin .6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── RESULTS ── */
+  .results-panel { display: flex; flex-direction: column; gap: 24px; }
+  .placeholder-msg { background: var(--surface); border: 1px dashed var(--border); padding: 60px 40px; text-align: center; color: var(--muted); }
+  .placeholder-msg svg { opacity: .25; margin: 0 auto 16px; display: block; }
+  .placeholder-msg p { font-size: 13px; letter-spacing: 1px; line-height: 2.4; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .result-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); padding: 24px 28px; animation: fadeUp .4s ease both; }
+  .result-card.blue-top   { border-top-color: var(--blue); }
+  .result-card.green-top  { border-top-color: var(--green); }
+  .result-card.purple-top { border-top-color: var(--purple); }
+
+  .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 3px; }
+  .card-title.blue   { color: var(--blue); }
+  .card-title.purple { color: var(--purple); }
+  .card-title.green  { color: var(--green); }
+  .card-label { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .metric-big { font-family: 'Barlow Condensed', sans-serif; font-size: 44px; font-weight: 700; line-height: 1; }
+
+  /* RESUMO EXECUTIVO */
+  .veredicto-bar { display: flex; align-items: center; gap: 14px; padding: 13px 18px; border: 1px solid; margin-bottom: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .veredicto-bar.pos { border-color: var(--green); background: rgba(63,185,80,.07); color: var(--green); }
+  .veredicto-bar.neg { border-color: var(--red);   background: rgba(248,81,73,.07);  color: var(--red); }
+  .v-detail { font-size: 12px; font-weight: 400; color: var(--muted); font-family: 'Barlow', sans-serif; letter-spacing: 0; text-transform: none; margin-left: auto; }
+  .exec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-bottom: 4px; }
+  .exec-cell { background: var(--bg); padding: 16px 18px; }
+  .exec-cell-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .exec-cell-value { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; line-height: 1; }
+  .exec-cell-sub { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: 'Share Tech Mono', monospace; }
+
+  /* TABLE */
+  .viab-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .viab-table th { background: var(--bg); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  .viab-table th:last-child, .viab-table td:last-child { text-align: right; }
+  .viab-table th:nth-child(2), .viab-table td:nth-child(2) { text-align: center; }
+  .viab-table th:nth-child(3), .viab-table td:nth-child(3) { text-align: right; }
+  .viab-table td { padding: 9px 14px; border-bottom: 1px solid #1c2333; font-family: 'Share Tech Mono', monospace; }
+  .viab-table tr:hover td { background: #1a2030; }
+  .viab-table .row-vgv td { color: var(--blue); }
+  .viab-table .row-vgv td:first-child { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+  .viab-table .row-item td:first-child { font-family: 'Barlow', sans-serif; color: var(--muted); padding-left: 24px; }
+  .viab-table .row-total td { background: var(--bg); font-weight: 600; border-top: 1px solid var(--border); }
+  .viab-table .row-total td:first-child { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+  .viab-table .row-lucro td { font-weight: 700; font-size: 14px; color: var(--green); }
+  .viab-table .row-lucro.neg td { color: var(--red); }
+  .viab-table .row-lucro td:first-child { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+  .lucro-badge { display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Barlow Condensed', sans-serif; margin-top: 12px; }
+  .lucro-badge.pos { background: rgba(63,185,80,.12); color: var(--green); border: 1px solid var(--green); }
+  .lucro-badge.neg { background: rgba(248,81,73,.12);  color: var(--red);   border: 1px solid var(--red); }
+
+  /* PONTO DE EQUILÍBRIO */
+  .pe-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1c2333; }
+  .pe-row:last-child { border-bottom: none; }
+  .pe-row-label { font-size: 13px; color: var(--muted); }
+  .pe-row-value { font-family: 'Share Tech Mono', monospace; font-size: 14px; }
+  .progress-wrap { margin-top: 18px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 6px; font-family: 'Share Tech Mono', monospace; }
+  .progress-bar { height: 6px; background: var(--border); }
+  .progress-fill { height: 100%; transition: width .7s ease; }
+  .progress-fill.g { background: var(--green); }
+  .progress-fill.r { background: var(--red); }
+
+  /* PARAMS GRID */
+  .params-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+  .param-cell { background: var(--bg); padding: 14px 16px; }
+  .param-cell-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+  .param-cell-value { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+  .param-cell-note  { font-size: 11px; color: var(--muted); font-family: 'Share Tech Mono', monospace; }
+
+  /* EXPORT BAR */
+  .export-bar { display: flex; justify-content: flex-end; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border); animation: fadeUp .4s ease .5s both; }
+  .btn-export { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 9px 16px; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 7px; }
+  .btn-export:hover { border-color: var(--accent); color: var(--accent); }
+
+  @media print {
+    header { position: static; }
+    .form-panel, .export-bar, .btn-row { display: none !important; }
+    .container { grid-template-columns: 1fr; }
+    .result-card { break-inside: avoid; }
+  }
+  @media (max-width: 1000px) {
+    .container { grid-template-columns: 1fr; padding: 20px; }
+    .form-panel { position: static; }
+    .exec-grid { grid-template-columns: 1fr 1fr; }
+    header { padding: 0 20px; }
+  }
+  @media (max-width: 560px) {
+    .exec-grid, .params-grid, .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-badge">Sua Casa Minha Vida</div>
+  <h1>Análise de Viabilidade</h1>
+  <div class="subtitle">Estudo Técnico para Viabilidade de Projeto</div>
+</header>
+
+<div class="container">
+
+  <!-- ── FORM PANEL ── -->
+  <aside class="form-panel">
+    <div class="panel-title">Parâmetros do Projeto</div>
+
+    <!-- BLOCO 1: DADOS DO TERRENO E PRODUTO -->
+    <div class="section-divider">Produto</div>
+
+    <div class="field-group">
+      <label>Tamanho do Terreno</label>
+      <input type="text" id="tamanhoTerreno" placeholder="ex: 20x30m" />
+      <div class="hint">Frente × Profundidade (metros)</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Tipo de Unidade</label>
+        <select id="tipoUnidade">
+          <option value="">— Selecione —</option>
+          <option>Apartamento</option>
+          <option>Casa</option>
+          <option>Sobrado</option>
+          <option>Studio</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Tamanho da Unidade</label>
+        <div class="input-wrap">
+          <input type="number" id="tamanhoUnidade" placeholder="42" min="1" />
+          <span class="suffix">m²</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Qtde de Unidades</label>
+        <input type="number" id="qtdeUnidades" placeholder="16" min="1" />
+      </div>
+      <div class="field-group">
+        <label>VGV por Unidade</label>
+        <div class="input-wrap">
+          <input type="number" id="vgvUnidade" placeholder="180000" min="1" />
+          <span class="suffix">R$</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCO 2: CUSTOS — agora todos editáveis -->
+    <div class="section-divider">Custos (% sobre VGV / unidade)</div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Terreno</label>
+        <div class="input-wrap">
+          <input type="number" id="pctTerreno" placeholder="16" min="0" max="100" step="0.1" oninput="atualizarTotal()" />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Obra</label>
+        <div class="input-wrap">
+          <input type="number" id="pctObra" placeholder="50" min="0" max="100" step="0.1" oninput="atualizarTotal()" />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>RET</label>
+        <div class="input-wrap">
+          <input type="number" id="pctRet" placeholder="4" min="0" max="100" step="0.1" oninput="atualizarTotal()" />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Regularização da Obra</label>
+        <div class="input-wrap">
+          <input type="number" id="pctReg" placeholder="6" min="0" max="100" step="0.1" oninput="atualizarTotal()" />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Impostos e Taxas</label>
+        <div class="input-wrap">
+          <input type="number" id="pctImp" placeholder="6" min="0" max="100" step="0.1" oninput="atualizarTotal()" />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field-group" style="display:flex;align-items:flex-end;">
+        <!-- espaço reservado — pode adicionar custo extra aqui futuramente -->
+      </div>
+    </div>
+
+    <!-- INDICADOR DE TOTAL DE CUSTOS -->
+    <div class="pct-total-bar">
+      <span class="label">Total de Custos:</span>
+      <span class="value warn" id="totalPct">—</span>
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="btn-row">
+      <button class="btn-analisar" id="btnAnalisar" onclick="analisar()">
+        <span id="btnText">Gerar Análise</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+      <button class="btn-limpar" onclick="limpar()" title="Limpar cenário">✕ Limpar</button>
+    </div>
+  </aside>
+
+  <!-- ── RESULTS ── -->
+  <main class="results-panel" id="results">
+    <div class="placeholder-msg" id="placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M9 8h6M9 11h4"/>
+      </svg>
+      <p>Preencha os parâmetros ao lado<br>e clique em <strong>Gerar Análise</strong><br><span style="font-size:11px;opacity:.6">Todos os percentuais de custo são configuráveis</span></p>
+    </div>
+  </main>
+
+</div>
+
+<script>
+// ── HELPERS ──────────────────────────────────────────
+const fmt  = v => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+const fmtN = v => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+const pct  = v => (v * 100).toFixed(1) + '%';
+const pctFmt = v => v.toFixed(1) + '%';
+
+function parseDim(s) {
+  const c = s.replace(/\s/g,'').toLowerCase().replace(/m/g,'');
+  const p = c.split(/[x×]/);
+  if (p.length === 2) {
+    const f = parseFloat(p[0]), d = parseFloat(p[1]);
+    if (!isNaN(f) && !isNaN(d)) return { frente: f, fundo: d };
+  }
+  return null;
+}
+
+// ── INDICADOR DINÂMICO DE TOTAL DE CUSTOS ────────────
+function atualizarTotal() {
+  const ids = ['pctTerreno','pctObra','pctRet','pctReg','pctImp'];
+  let soma = 0;
+  ids.forEach(id => {
+    const v = parseFloat(document.getElementById(id).value);
+    if (!isNaN(v)) soma += v;
+  });
+  const el = document.getElementById('totalPct');
+  if (soma === 0) { el.textContent = '—'; el.className = 'value warn'; return; }
+  el.textContent = soma.toFixed(1) + '%';
+  if (soma > 100)      { el.className = 'value bad'; }
+  else if (soma > 90)  { el.className = 'value warn'; }
+  else                 { el.className = 'value ok'; }
+}
+
+// ── LIMPAR ───────────────────────────────────────────
+function limpar() {
+  const ids = ['tamanhoTerreno','tamanhoUnidade','qtdeUnidades','vgvUnidade',
+               'pctTerreno','pctObra','pctRet','pctReg','pctImp'];
+  ids.forEach(id => document.getElementById(id).value = '');
+  document.getElementById('tipoUnidade').value = '';
+  document.getElementById('totalPct').textContent = '—';
+  document.getElementById('totalPct').className = 'value warn';
+  document.getElementById('results').innerHTML = `
+    <div class="placeholder-msg" id="placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M9 8h6M9 11h4"/>
+      </svg>
+      <p>Preencha os parâmetros ao lado<br>e clique em <strong>Gerar Análise</strong><br><span style="font-size:11px;opacity:.6">Todos os percentuais de custo são configuráveis</span></p>
+    </div>`;
+}
+
+// ── EXPORT CSV ───────────────────────────────────────
+function exportCSV(d) {
+  const rows = [
+    ['Item','%','Valor por Unidade (R$)','Valor Total (R$)'],
+    ['VGV Total','100%', fmtN(d.vu), fmtN(d.vgvT)],
+    ['(-) Terreno',    pctFmt(d.pTerreno), fmtN(d.tv), fmtN(d.tv*d.qt)],
+    ['(-) Obra',       pctFmt(d.pObra),    fmtN(d.ov), fmtN(d.ov*d.qt)],
+    ['(-) RET',        pctFmt(d.pRet),     fmtN(d.rv), fmtN(d.rv*d.qt)],
+    ['(-) Regularização da Obra', pctFmt(d.pReg), fmtN(d.rgv), fmtN(d.rgv*d.qt)],
+    ['(-) Impostos e Taxas da Venda', pctFmt(d.pImp), fmtN(d.iv), fmtN(d.iv*d.qt)],
+    ['Custo Total', pctFmt(d.custoU/d.vu*100), fmtN(d.custoU), fmtN(d.custoT)],
+    ['Lucro Bruto', pctFmt(d.lPct*100), fmtN(d.lucroU), fmtN(d.lucroT)],
+    [],
+    ['ROI do Projeto', pctFmt(d.roi*100),'',''],
+    ['Margem Bruta', pctFmt(d.lPct*100),'',''],
+    ['P.E. — Unidades', d.peUn,'',''],
+    ['P.E. — Receita (R$)', fmtN(d.peVal),'',''],
+    ['Compra do Terreno (R$)', fmtN(d.terC),'',''],
+  ];
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(';')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff'+csv], { type: 'text/csv;charset=utf-8;' }));
+  a.download = 'viabilidade_mcmv.csv';
+  a.click();
+}
+
+// ── ANÁLISE PRINCIPAL ─────────────────────────────────
+function analisar() {
+  const ts  = document.getElementById('tamanhoTerreno').value.trim();
+  const tu  = document.getElementById('tipoUnidade').value;
+  const mu  = parseFloat(document.getElementById('tamanhoUnidade').value);
+  const qt  = parseInt(document.getElementById('qtdeUnidades').value);
+  const vu  = parseFloat(document.getElementById('vgvUnidade').value);
+
+  const pTerreno = parseFloat(document.getElementById('pctTerreno').value);
+  const pObra    = parseFloat(document.getElementById('pctObra').value);
+  const pRet     = parseFloat(document.getElementById('pctRet').value);
+  const pReg     = parseFloat(document.getElementById('pctReg').value);
+  const pImp     = parseFloat(document.getElementById('pctImp').value);
+
+  // Validação
+  const erros = [];
+  if (!ts)                         erros.push('Tamanho do Terreno');
+  if (!tu)                         erros.push('Tipo de Unidade');
+  if (isNaN(mu) || mu <= 0)        erros.push('Tamanho da Unidade');
+  if (isNaN(qt) || qt <= 0)        erros.push('Qtde de Unidades');
+  if (isNaN(vu) || vu <= 0)        erros.push('VGV por Unidade');
+  if (isNaN(pTerreno))             erros.push('% Terreno');
+  if (isNaN(pObra))                erros.push('% Obra');
+  if (isNaN(pRet))                 erros.push('% RET');
+  if (isNaN(pReg))                 erros.push('% Regularização');
+  if (isNaN(pImp))                 erros.push('% Impostos e Taxas');
+  if (erros.length) { alert('Preencha: ' + erros.join(', ')); return; }
+
+  const totalCustoPct = pTerreno + pObra + pRet + pReg + pImp;
+  if (totalCustoPct > 100) {
+    if (!confirm(`A soma dos custos (${totalCustoPct.toFixed(1)}%) ultrapassa 100% do VGV.\nO resultado será um lucro negativo.\nDeseja continuar mesmo assim?`)) return;
+  }
+
+  const dim = parseDim(ts);
+  if (!dim) { alert('Informe o terreno no formato FRENTExFUNDO (ex: 20x30m)'); return; }
+
+  const btn = document.getElementById('btnAnalisar');
+  const sp  = document.getElementById('spinner');
+  const bt  = document.getElementById('btnText');
+  btn.disabled = true; bt.style.display = 'none'; sp.style.display = 'block';
+
+  setTimeout(() => {
+
+    // ── CÁLCULOS ─────────────────────────────────────
+    const vgvT   = vu * qt;
+    const tv     = vu * (pTerreno / 100);
+    const ov     = vu * (pObra    / 100);
+    const rv     = vu * (pRet     / 100);
+    const rgv    = vu * (pReg     / 100);
+    const iv     = vu * (pImp     / 100);
+    const custoU = tv + ov + rv + rgv + iv;
+    const custoT = custoU * qt;
+    const lucroU = vu - custoU;
+    const lucroT = vgvT - custoT;
+    const lPct   = lucroT / vgvT;
+    const roi    = custoT > 0 ? lucroT / custoT : 0;
+
+    // Compra do terreno = % Terreno sobre VGV Total
+    const terC   = vgvT * (pTerreno / 100);
+
+    // Ponto de Equilíbrio
+    const peUn   = Math.ceil(custoT / vu);
+    const peVal  = peUn * vu;
+    const pePct  = peUn / qt;
+
+    const pos = lucroT >= 0;
+
+    // Dataset para export
+    const d = { vu, vgvT, qt, tv, ov, rv, rgv, iv,
+                pTerreno, pObra, pRet, pReg, pImp,
+                custoU, custoT, lucroU, lucroT, lPct, roi, terC, peUn, peVal };
+    window.__d__ = d;
+
+    // ── RENDER ───────────────────────────────────────
+    document.getElementById('results').innerHTML = `
+
+    <!-- 01 COMPRA DO TERRENO -->
+    <div class="result-card" style="animation-delay:.08s">
+      <div class="card-title">01 — Valor de Compra do Terreno</div>
+      <div class="card-label">${pctFmt(pTerreno)}% sobre o VGV Total do Projeto</div>
+      <div class="metric-big" style="color:var(--accent)">R$ ${fmt(terC).replace('R$','').trim()}</div>
+    </div>
+
+    <!-- 02 VGV TOTAL -->
+    <div class="result-card blue-top" style="animation-delay:.14s">
+      <div class="card-title blue">02 — VGV Total do Projeto</div>
+      <div class="card-label">${qt} unidades × ${fmt(vu)}</div>
+      <div class="metric-big" style="color:var(--blue)">R$ ${fmt(vgvT).replace('R$','').trim()}</div>
+    </div>
+
+    <!-- 03 TABELA DE VIABILIDADE -->
+    <div class="result-card" style="animation-delay:.20s">
+      <div class="card-title">03 — Tabela de Viabilidade</div>
+      <div class="card-label">${tu} · ${mu} m² · ${qt} unidades · Custos totais: ${pctFmt(totalCustoPct)}</div>
+      <table class="viab-table">
+        <thead>
+          <tr><th>Item</th><th>%</th><th>Valor por Unidade</th><th>Valor Total</th></tr>
+        </thead>
+        <tbody>
+          <tr class="row-vgv">
+            <td>VGV Total</td><td>100%</td><td>${fmt(vu)}</td><td>${fmt(vgvT)}</td>
+          </tr>
+          <tr class="row-item">
+            <td>(-) Terreno</td><td>${pctFmt(pTerreno)}</td><td>${fmt(tv)}</td><td>${fmt(tv*qt)}</td>
+          </tr>
+          <tr class="row-item">
+            <td>(-) Obra</td><td>${pctFmt(pObra)}</td><td>${fmt(ov)}</td><td>${fmt(ov*qt)}</td>
+          </tr>
+          <tr class="row-item">
+            <td>(-) RET</td><td>${pctFmt(pRet)}</td><td>${fmt(rv)}</td><td>${fmt(rv*qt)}</td>
+          </tr>
+          <tr class="row-item">
+            <td>(-) Regularização da Obra</td><td>${pctFmt(pReg)}</td><td>${fmt(rgv)}</td><td>${fmt(rgv*qt)}</td>
+          </tr>
+          <tr class="row-item">
+            <td>(-) Impostos e Taxas da Venda</td><td>${pctFmt(pImp)}</td><td>${fmt(iv)}</td><td>${fmt(iv*qt)}</td>
+          </tr>
+          <tr class="row-total">
+            <td>Custo Total</td><td>${pctFmt(totalCustoPct)}</td><td>${fmt(custoU)}</td><td>${fmt(custoT)}</td>
+          </tr>
+          <tr class="row-lucro ${pos?'':'neg'}">
+            <td>Lucro Bruto</td><td>${pct(lPct)}</td><td>${fmt(lucroU)}</td><td>${fmt(lucroT)}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="lucro-badge ${pos?'pos':'neg'}">${pos?'▲ PROJETO VIÁVEL':'▼ PROJETO INVIÁVEL'} — Margem: ${pct(lPct)}</div>
+    </div>
+
+    <!-- 04 RESUMO EXECUTIVO -->
+    <div class="result-card purple-top" style="animation-delay:0s">
+      <div class="card-title purple">00 — Resumo Executivo</div>
+      <div class="card-label">${tu} · ${mu} m² · Terreno ${dim.frente}m × ${dim.fundo}m · ${qt} unidades · ${new Date().toLocaleDateString('pt-BR')}</div>
+
+      <div class="veredicto-bar ${pos ? 'pos' : 'neg'}">
+        <span>${pos ? '▲' : '▼'}</span>
+        <span>PROJETO ${pos ? 'VIÁVEL' : 'INVIÁVEL'}</span>
+        <span class="v-detail">Margem bruta de ${pct(lPct)} sobre o VGV</span>
+      </div>
+
+      <div class="exec-grid">
+        <div class="exec-cell">
+          <div class="exec-cell-label">VGV Total</div>
+          <div class="exec-cell-value" style="color:var(--blue)">${fmt(vgvT)}</div>
+          <div class="exec-cell-sub">${qt} × ${fmt(vu)}</div>
+        </div>
+        <div class="exec-cell">
+          <div class="exec-cell-label">Lucro Bruto</div>
+          <div class="exec-cell-value" style="color:${pos ? 'var(--green)' : 'var(--red)'}">${fmt(lucroT)}</div>
+          <div class="exec-cell-sub">${pct(lPct)} do VGV</div>
+        </div>
+        <div class="exec-cell">
+          <div class="exec-cell-label">ROI do Projeto</div>
+          <div class="exec-cell-value" style="color:${roi >= 0 ? 'var(--accent)' : 'var(--red)'}">${pct(roi)}</div>
+          <div class="exec-cell-sub">Lucro ÷ Custo Total</div>
+        </div>
+        <div class="exec-cell">
+          <div class="exec-cell-label">Custo Total</div>
+          <div class="exec-cell-value">${fmt(custoT)}</div>
+          <div class="exec-cell-sub">${pct(custoU / vu)} do VGV unitário</div>
+        </div>
+        <div class="exec-cell">
+          <div class="exec-cell-label">P.E. — Unidades</div>
+          <div class="exec-cell-value" style="color:var(--accent)">${peUn} un.</div>
+          <div class="exec-cell-sub">${(pePct * 100).toFixed(1)}% do estoque</div>
+        </div>
+        <div class="exec-cell">
+          <div class="exec-cell-label">P.E. — Receita</div>
+          <div class="exec-cell-value" style="color:var(--accent)">${fmt(peVal)}</div>
+          <div class="exec-cell-sub">Mínimo necessário</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 05 PONTO DE EQUILÍBRIO -->
+    <div class="result-card green-top" style="animation-delay:.26s">
+      <div class="card-title green">04 — Ponto de Equilíbrio</div>
+      <div class="card-label">Quantidade mínima de unidades para cobrir todos os custos</div>
+      <div class="pe-row">
+        <span class="pe-row-label">Unidades necessárias para break-even</span>
+        <span class="pe-row-value" style="color:var(--accent)">${peUn} de ${qt} unidades</span>
+      </div>
+      <div class="pe-row">
+        <span class="pe-row-label">Receita mínima de break-even</span>
+        <span class="pe-row-value" style="color:var(--accent)">${fmt(peVal)}</span>
+      </div>
+      <div class="pe-row">
+        <span class="pe-row-label">% do estoque para atingir equilíbrio</span>
+        <span class="pe-row-value" style="color:${pePct<=.8?'var(--green)':'var(--red)'}">${(pePct*100).toFixed(1)}%</span>
+      </div>
+      <div class="pe-row">
+        <span class="pe-row-label">Margem de segurança (unid. acima do P.E.)</span>
+        <span class="pe-row-value" style="color:var(--green)">+${Math.max(0, qt - peUn)} unidades</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>0%</span>
+          <span>P.E.: ${(pePct*100).toFixed(1)}%</span>
+          <span>100%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill ${pePct<=.8?'g':'r'}" style="width:${Math.min(pePct*100,100).toFixed(1)}%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 PARÂMETROS DO CENÁRIO -->
+    <div class="result-card" style="animation-delay:.32s">
+      <div class="card-title">05 — Parâmetros do Cenário</div>
+      <div class="card-label">Todos os valores utilizados nesta análise</div>
+      <div class="params-grid">
+        <div class="param-cell">
+          <div class="param-cell-label">Tamanho do Terreno</div>
+          <div class="param-cell-value" style="color:var(--accent)">${dim.frente}m × ${dim.fundo}m</div>
+          <div class="param-cell-note">${(dim.frente*dim.fundo).toLocaleString('pt-BR')} m² total</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">Tipo / Tamanho da Unidade</div>
+          <div class="param-cell-value">${tu}</div>
+          <div class="param-cell-note">${mu} m² por unidade</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">Quantidade de Unidades</div>
+          <div class="param-cell-value" style="color:var(--accent)">${qt} un.</div>
+          <div class="param-cell-note">${(mu*qt).toLocaleString('pt-BR')} m² área privativa total</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">VGV por Unidade</div>
+          <div class="param-cell-value">${fmt(vu)}</div>
+          <div class="param-cell-note">${fmt(vu/mu).replace('R$','R$ ').trim()} / m²</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">% Terreno</div>
+          <div class="param-cell-value" style="color:var(--accent)">${pctFmt(pTerreno)}</div>
+          <div class="param-cell-note">${fmt(tv)} / unidade · ${fmt(tv*qt)} total</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">% Obra</div>
+          <div class="param-cell-value" style="color:var(--accent)">${pctFmt(pObra)}</div>
+          <div class="param-cell-note">${fmt(ov)} / unidade · ${fmt(ov*qt)} total</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">% RET</div>
+          <div class="param-cell-value" style="color:var(--accent)">${pctFmt(pRet)}</div>
+          <div class="param-cell-note">${fmt(rv)} / unidade · ${fmt(rv*qt)} total</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">% Regularização da Obra</div>
+          <div class="param-cell-value" style="color:var(--accent)">${pctFmt(pReg)}</div>
+          <div class="param-cell-note">${fmt(rgv)} / unidade · ${fmt(rgv*qt)} total</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">% Impostos e Taxas da Venda</div>
+          <div class="param-cell-value" style="color:var(--accent)">${pctFmt(pImp)}</div>
+          <div class="param-cell-note">${fmt(iv)} / unidade · ${fmt(iv*qt)} total</div>
+        </div>
+        <div class="param-cell">
+          <div class="param-cell-label">Custo Total (% do VGV)</div>
+          <div class="param-cell-value">${pctFmt(totalCustoPct)}</div>
+          <div class="param-cell-note">${fmt(custoU)} / unidade · ${fmt(custoT)} total</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA DE EXPORTAÇÃO -->
+    <div class="export-bar">
+      <button class="btn-export" onclick="exportCSV(window.__d__)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Exportar CSV
+      </button>
+      <button class="btn-export" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 6 2 18 2 18 9"/>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+          <rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        Imprimir / PDF
+      </button>
+    </div>`;
+
+    btn.disabled = false; bt.style.display = 'block'; sp.style.display = 'none';
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  }, 280);
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') analisar(); });
+</script>
+</body>
+</html>
